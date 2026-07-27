@@ -61,7 +61,7 @@
                                 <div class="font-bold text-slate-800 text-sm">Teknik & Manufaktur</div>
                                 <div class="text-xs text-slate-500">Bekerja di Industri Mitra</div>
                             </div>
-                            <span class="ml-auto bg-emerald-100 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-bold">583 Orang</span>
+                            <span class="ml-auto bg-emerald-100 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-bold"><?= number_format($stats['total_bekerja']) ?> Orang</span>
                         </div>
 
                         <!-- Card 2: BLK Central Building -->
@@ -87,7 +87,7 @@
                                 <div class="font-bold text-slate-800 text-sm">Wirausaha Mandiri</div>
                                 <div class="text-xs text-slate-500">Membuka Lapangan Kerja</div>
                             </div>
-                            <span class="ml-auto bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-full font-bold">96 Usaha</span>
+                            <span class="ml-auto bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-full font-bold"><?= number_format($stats['total_wirausaha']) ?> Usaha</span>
                         </div>
                     </div>
 
@@ -164,21 +164,31 @@
 
             <!-- Filter Controls -->
             <div class="flex flex-wrap items-center gap-3">
-                <select class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                    <option>Tahun 2026</option>
-                    <option>Tahun 2025</option>
-                    <option>Tahun 2024</option>
+                <select id="filterTahun" onchange="filterTracerStats()" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer">
+                    <option value="semua">Semua Tahun</option>
+                    <?php if (!empty($filterOptions['tahunList'])): ?>
+                        <?php foreach ($filterOptions['tahunList'] as $t): ?>
+                            <option value="<?= esc($t) ?>">Tahun <?= esc($t) ?></option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option value="2026">Tahun 2026</option>
+                        <option value="2025">Tahun 2025</option>
+                        <option value="2024">Tahun 2024</option>
+                    <?php endif; ?>
                 </select>
-                <select class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                    <option>APBD & MTU</option>
-                    <option>APBD</option>
-                    <option>APBN</option>
+                <select id="filterAnggaran" onchange="filterTracerStats()" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer">
+                    <option value="semua">APBD & MTU</option>
+                    <option value="apbd">APBD</option>
+                    <option value="apbn">APBN</option>
+                    <option value="mtu">MTU (Mobile Training Unit)</option>
                 </select>
-                <select class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                    <option>Semua Kejuruan</option>
-                    <option>Teknik Manufaktur</option>
-                    <option>Teknik Listrik</option>
-                    <option>Teknologi Informasi</option>
+                <select id="filterKejuruan" onchange="filterTracerStats()" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 max-w-xs cursor-pointer truncate">
+                    <option value="semua">Semua Kejuruan</option>
+                    <?php if (!empty($filterOptions['programList'])): ?>
+                        <?php foreach ($filterOptions['programList'] as $p): ?>
+                            <option value="<?= esc($p['idProgram']) ?>"><?= esc($p['nama_program']) ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </select>
             </div>
         </div>
@@ -194,7 +204,7 @@
                 </div>
                 <div class="border-t border-slate-100 pt-4 flex items-center justify-between text-sm font-bold text-slate-700">
                     <span>Total Alumni Terlatih</span>
-                    <span class="text-brand-600 text-lg"><?= number_format($stats['total_alumni']) ?></span>
+                    <span id="totalAlumniTerlatih" class="text-brand-600 text-lg"><?= number_format($stats['total_alumni']) ?></span>
                 </div>
             </div>
 
@@ -518,6 +528,41 @@
                     .bindPopup("<b>" + loc.kota + "</b><br>" + loc.total + " Alumni");
             }
         });
+
+        // Dynamic Filter Handler via AJAX
+        window.filterTracerStats = function () {
+            const tahun = document.getElementById('filterTahun').value;
+            const anggaran = document.getElementById('filterAnggaran').value;
+            const idProgram = document.getElementById('filterKejuruan').value;
+
+            fetch(`<?= base_url('api/statistik') ?>?tahun=${tahun}&anggaran=${anggaran}&id_program=${idProgram}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.stats) {
+                        statusChart.updateSeries([
+                            data.stats.persen_bekerja,
+                            data.stats.persen_wirausaha,
+                            data.stats.persen_belum
+                        ]);
+
+                        document.getElementById('totalAlumniTerlatih').innerText = Number(data.stats.total_alumni).toLocaleString();
+
+                        if (data.kejuruanStats && data.kejuruanStats.length > 0) {
+                            const categories = data.kejuruanStats.map(k => k.nama_kejuruan);
+                            const totals = data.kejuruanStats.map(k => k.total);
+
+                            kejuruanChart.updateOptions({
+                                xaxis: { categories: categories }
+                            });
+                            kejuruanChart.updateSeries([{
+                                name: 'Penempatan',
+                                data: totals
+                            }]);
+                        }
+                    }
+                })
+                .catch(err => console.error("Error updating stats:", err));
+        };
 
     });
 </script>

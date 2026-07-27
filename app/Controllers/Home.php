@@ -29,6 +29,7 @@ class Home extends BaseController
         $stats = $this->dashboardService->getSummaryStats();
         $kejuruanStats = $this->dashboardService->getKejuruanStats();
         $regionalData = $this->dashboardService->getRegionalDistribution();
+        $filterOptions = $this->dashboardService->getFilterOptions();
 
         $banners = $this->bannerModel->where('status', 'aktif')->orderBy('urutan', 'ASC')->findAll();
         $mitraList = $this->mitraModel->where('status', 'aktif')->findAll(6);
@@ -41,6 +42,7 @@ class Home extends BaseController
             ->join('pelatihan pel', 'pel.idPelatihan = p.idPelatihan', 'left')
             ->join('program prg', 'prg.idProgram = pel.idProgram', 'left')
             ->join('gelombang g', 'g.idGelombang = p.idGelombang', 'left')
+            ->where('pen.idLembaga', 4)
             ->where('pen.status IS NOT NULL')
             ->where('pen.status !=', '')
             ->orderBy('pen.id', 'DESC')
@@ -64,6 +66,7 @@ class Home extends BaseController
             'stats'          => $stats,
             'kejuruanStats'  => $kejuruanStats,
             'regionalData'   => $regionalData,
+            'filterOptions'  => $filterOptions,
             'banners'        => $banners,
             'mitraList'      => $mitraList,
             'ceritaList'     => $ceritaList,
@@ -71,5 +74,16 @@ class Home extends BaseController
         ];
 
         return view('landing/index', $data);
+    }
+
+    public function apiStatistik()
+    {
+        $tahun = $this->request->getGet('tahun');
+        $anggaran = $this->request->getGet('anggaran');
+        $idProgram = $this->request->getGet('id_program');
+
+        $result = $this->dashboardService->getFilteredStats($tahun, $anggaran, $idProgram);
+
+        return $this->response->setJSON($result);
     }
 }

@@ -24,7 +24,8 @@ class Direktori extends BaseController
             ->join('pendaftar p', 'p.id = pen.idPendaftar', 'inner')
             ->join('pelatihan pel', 'pel.idPelatihan = p.idPelatihan', 'left')
             ->join('program prg', 'prg.idProgram = pel.idProgram', 'left')
-            ->join('gelombang g', 'g.idGelombang = p.idGelombang', 'left');
+            ->join('gelombang g', 'g.idGelombang = p.idGelombang', 'left')
+            ->where('pen.idLembaga', 4);
 
         if (!empty($status)) {
             $builder->where('pen.status', $status);

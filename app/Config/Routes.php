@@ -18,6 +18,7 @@ $routes->get('/register', 'Auth::register');
 $routes->post('/register/check-nik', 'Auth::checkNik');
 $routes->post('/register/process', 'Auth::processRegister');
 $routes->get('/logout', 'Auth::logout');
+$routes->get('/api/statistik', 'Home::apiStatistik');
 
 // Alumni Routes
 $routes->group('alumni', ['filter' => 'auth'], function ($routes) {

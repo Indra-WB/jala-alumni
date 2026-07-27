@@ -22,9 +22,10 @@ class Alumni extends BaseController
 
         $builder = $this->dbTraining->table('pendaftar p')
             ->select('p.id, p.ktp, p.firstname as nama, p.hp, p.email, pen.status, pen.nama_perusahaan, pen.jabatan, prg.program as kejuruan')
-            ->join('penempatan pen', 'pen.idPendaftar = p.id', 'left')
+            ->join('penempatan pen', 'pen.idPendaftar = p.id AND pen.idLembaga = 4', 'left')
             ->join('pelatihan pel', 'pel.idPelatihan = p.idPelatihan', 'left')
-            ->join('program prg', 'prg.idProgram = pel.idProgram', 'left');
+            ->join('program prg', 'prg.idProgram = pel.idProgram', 'left')
+            ->where('p.idLembaga', 4);
 
         if (!empty($search)) {
             $builder->groupStart()

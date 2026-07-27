@@ -84,6 +84,7 @@ class AlumniService
         }
 
         $penempatanData = [
+            'idLembaga'         => 4,
             'ktp'               => $nik,
             'idPendaftar'       => $pendaftar['id'] ?? null,
             'idGelombang'       => $pendaftar['idGelombang'] ?? null,

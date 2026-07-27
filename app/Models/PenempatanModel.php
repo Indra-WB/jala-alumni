@@ -27,6 +27,6 @@ class PenempatanModel extends Model
 
     public function findByNik($nik)
     {
-        return $this->where('ktp', $nik)->orderBy('id', 'DESC')->first();
+        return $this->where('ktp', $nik)->where('idLembaga', 4)->orderBy('id', 'DESC')->first();
     }
 }

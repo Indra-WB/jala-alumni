@@ -11,10 +11,16 @@
                 <h1 class="text-3xl font-black">Selamat Datang, <?= esc($alumniData['profile']['nama_lengkap'] ?? session()->get('nama_lengkap')) ?>!</h1>
                 <p class="text-brand-100 text-sm">NIK: <?= esc(session()->get('nik')) ?> • Status Akun: <span class="font-bold text-emerald-300">Aktif</span></p>
             </div>
-            <a href="<?= base_url('alumni/status') ?>" class="inline-flex items-center gap-2 bg-white text-brand-700 hover:bg-slate-50 font-bold px-6 py-3.5 rounded-xl shadow-lg transition-transform hover:scale-105 shrink-0">
-                <i data-lucide="edit-3" class="w-4 h-4"></i>
-                <span>Update Status Kebekerjaan</span>
-            </a>
+            <div class="flex items-center gap-3 shrink-0">
+                <a href="<?= base_url('alumni/status') ?>" class="inline-flex items-center gap-2 bg-white text-brand-700 hover:bg-slate-50 font-bold px-6 py-3.5 rounded-xl shadow-lg transition-transform hover:scale-105">
+                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    <span>Update Status Kebekerjaan</span>
+                </a>
+                <a href="<?= base_url('logout') ?>" onclick="return confirm('Apakah Anda yakin ingin keluar/logout?')" class="inline-flex items-center gap-2 bg-rose-500/20 hover:bg-rose-500 text-white font-bold px-5 py-3.5 rounded-xl border border-white/30 transition-all hover:scale-105">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
         </div>
 
         <?php if (session()->getFlashdata('success')): ?>
@@ -54,9 +60,15 @@
                     </div>
                 </div>
 
-                <a href="<?= base_url('alumni/profil') ?>" class="block text-center bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold py-2.5 rounded-xl border border-slate-200 text-xs transition-colors">
-                    Edit Profil Saya
-                </a>
+                <div class="space-y-2">
+                    <a href="<?= base_url('alumni/profil') ?>" class="block text-center bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold py-2.5 rounded-xl border border-slate-200 text-xs transition-colors">
+                        Edit Profil Saya
+                    </a>
+                    <a href="<?= base_url('logout') ?>" onclick="return confirm('Apakah Anda yakin ingin keluar/logout?')" class="flex items-center justify-center gap-2 text-center bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold py-2.5 rounded-xl border border-rose-200 text-xs transition-colors">
+                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                        <span>Keluar / Logout</span>
+                    </a>
+                </div>
             </div>
 
             <!-- Widget 2: Status Pekerjaan Saat Ini -->

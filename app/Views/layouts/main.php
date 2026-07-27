@@ -35,8 +35,9 @@
         }
     </script>
     
-    <!-- Lucide Icons -->
+    <!-- Lucide Icons & FontAwesome Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <!-- ApexCharts -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -83,6 +84,9 @@
                         <i data-lucide="user" class="w-4 h-4"></i>
                         <span><?= esc(session()->get('nama_lengkap')) ?></span>
                     </a>
+                    <a href="<?= base_url('logout') ?>" onclick="return confirm('Apakah Anda yakin ingin keluar/logout?')" title="Logout" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </a>
                 <?php else: ?>
                     <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-brand-600/30 hover:shadow-brand-600/50 transition-all transform hover:-translate-y-0.5">
                         <i data-lucide="user-check" class="w-4 h-4"></i>
@@ -113,12 +117,14 @@
                     <p class="text-sm text-slate-400 leading-relaxed">
                         Platform resmi UPT BLK Pasuruan untuk menghubungkan alumni dengan peluang kerja, usaha, dan jejaring industri secara terintegrasi.
                     </p>
-                    <div class="flex items-center gap-3 pt-2">
-                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
-                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition-colors"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
-                    </div>
+                    <ul class="flex flex-wrap items-center gap-2.5 pt-2">
+                        <li><a href="https://wa.me/+6285806785550" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-emerald-600 transition-colors" title="WhatsApp"><i class="fa fa-whatsapp text-sm"></i></a></li>
+                        <li><a href="mailto:uptblk.pasuruan@gmail.com" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition-colors" title="Email"><i class="fa fa-envelope text-sm"></i></a></li>
+                        <li><a href="https://uptblkpasuruan.com" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-brand-600 transition-colors" title="Website"><i class="fa fa-dribbble text-sm"></i></a></li>
+                        <li><a href="https://www.instagram.com/uptblkpasuruan" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-pink-600 transition-colors" title="Instagram"><i class="fa fa-instagram text-sm"></i></a></li>
+                        <li><a href="https://www.facebook.com/uptblkpasuruan" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600 transition-colors" title="Facebook"><i class="fa fa-facebook text-sm"></i></a></li>
+                        <li><a href="https://www.youtube.com/@uptbalailatihankerjapasuru8458" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-red-600 transition-colors" title="YouTube"><i class="fa fa-youtube text-sm"></i></a></li>
+                    </ul>
                 </div>
 
                 <!-- Tautan Cepat -->
@@ -151,15 +157,19 @@
                     <ul class="space-y-3 text-sm text-slate-400">
                         <li class="flex items-start gap-3">
                             <i data-lucide="map-pin" class="w-5 h-5 text-brand-500 shrink-0 mt-0.5"></i>
-                            <span>Jl. Kipang No. 63-65, Petahanan, Kec. Gadingrejo, Kota Pasuruan, Jawa Timur 67134</span>
+                            <span>Jl. Pahlawan Sunaryo No.96-S, Kebon Waris, Kec. Pandaan, Kab. Pasuruan.</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <i data-lucide="phone" class="w-4 h-4 text-brand-500 shrink-0"></i>
-                            <span>(0343) 426925</span>
+                            <span>Tlp: (0343) 631696</span>
                         </li>
                         <li class="flex items-center gap-3">
-                            <i data-lucide="mail" class="w-4 h-4 text-brand-500 shrink-0"></i>
-                            <span>info@blkpasuruan.id</span>
+                            <i data-lucide="printer" class="w-4 h-4 text-brand-500 shrink-0"></i>
+                            <span>Fax: (0343) 630014</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                            <span>WA: 085806785550</span>
                         </li>
                     </ul>
                 </div>
